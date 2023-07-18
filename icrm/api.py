@@ -13,7 +13,6 @@ def login(usr,pwd):
         "success_key":0,
         "message":"Authentication Error!"
     }  
-
     return
   
   api_generate=generate_keys(frappe.session.user)
@@ -28,9 +27,6 @@ def login(usr,pwd):
     "user":user
   }
 
-
-
-
 def generate_keys(user):
   user_details=frappe.get_doc('User',user)
   api_secret=frappe.generate_hash(length=15)
@@ -43,4 +39,14 @@ def generate_keys(user):
   user_details.save()
 
   return api_secret   
+
+
+
+@frappe.whitelist()
+def get_customer_data(customer_id=None):
+	data = frappe.get_all(
+		doctype = 'Customer',
+		fields = ['name','owner']
+	)
+	return data
 
